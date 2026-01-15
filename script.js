@@ -55,7 +55,7 @@ function init() {
         scene.add(horseModel);
         
         const isMobile = window.innerWidth <= 768;
-        const scale = isMobile ? 2.2 : 2.8;
+        const scale = isMobile ? 1.5 : 1.8;
         horseModel.scale.set(scale, scale, scale);
         horseModel.position.set(0, 0, 0);
         
@@ -188,7 +188,7 @@ function createDiagonalHorse() {
     scene.add(horseModel);
     
     const isMobile = window.innerWidth <= 768;
-    const scale = isMobile ? 2.0 : 2.6;
+    const scale = isMobile ? 1.3 : 1.6;
     horseModel.scale.set(scale, scale, scale);
     horseModel.position.set(0, 0, 0);
     
@@ -384,4 +384,5 @@ if (document.readyState === 'loading') {
 }
 
 init();
+
 
