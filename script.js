@@ -7,7 +7,7 @@ let flipAngle = 0;
 function init() {
     // Scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    scene.background = new THREE.Color(0x1178f9);
     
     // Efeitos visuais
     createSpeedLines();
