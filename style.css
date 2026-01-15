@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: #1178f9;
+    background: #0e56be;
     cursor: default;
     font-family: 'Courier New', monospace;
     display: flex;
@@ -332,4 +332,5 @@ body::after {
     0% { background-position: 0 0; }
     100% { background-position: 0 100%; }
 }
+
 
