@@ -13,7 +13,7 @@ let sideSway = 0;
 let swayTime = 0;
 let tiltVariation = 0;
 let lastRandomUpdate = 0;
-const RANDOM_UPDATE_INTERVAL = 400; // REDUZIDO para atualizações mais frequentes
+const RANDOM_UPDATE_INTERVAL = 200; // MUITO MAIS RÁPIDO
 
 function init() {
     scene = new THREE.Scene();
@@ -59,10 +59,8 @@ function init() {
         horseModel.scale.set(scale, scale, scale);
         horseModel.position.set(0, 0, 0);
         
-        // ROTAÇÃO INICIAL - APENAS Y e Z
         horseModel.rotation.y = -Math.PI / 4;
         horseModel.rotation.z = Math.PI / 24;
-        // NÃO SETAR rotation.x AQUI - será controlado pela animação
         
         startFlipAnimation();
         
@@ -77,36 +75,28 @@ function init() {
         if (horseModel) {
             const currentTime = Date.now();
             
-            // Atualiza aleatoriedades mais frequentemente
             if (currentTime - lastRandomUpdate > RANDOM_UPDATE_INTERVAL) {
                 updateRandomness();
                 lastRandomUpdate = currentTime;
             }
             
-            // Rotação principal do flip (horário) com variação maior
-            flipAngle -= flipSpeed * (0.8 + Math.random() * 0.4); // MAIS Variação
+            flipAngle -= flipSpeed * (0.7 + Math.random() * 0.6);
             
-            // Mantém rotação Y e Z base
             horseModel.rotation.z = Math.PI / 24 + flipAngle * 0.8;
             horseModel.rotation.y = -Math.PI / 4;
-            // NÃO setar rotation.x aqui - será feito em applyControlledChaos
             
-            // Aplica a esquizofrenia intensificada
             applyControlledChaos(currentTime);
             
-            // Bounce base
             const bounce = Math.sin(flipAngle * 2) * 0.1;
             
-            // Vibração MUITO mais intensa
-            const microVibration = Math.sin(currentTime * 0.02) * 0.15 * chaosLevel + 
-                                  Math.sin(currentTime * 0.035) * 0.08 * chaosLevel;
+            const microVibration = Math.sin(currentTime * 0.08) * 0.3 * chaosLevel + 
+                                  Math.sin(currentTime * 0.12) * 0.15 * chaosLevel +
+                                  Math.sin(currentTime * 0.2) * 0.08 * chaosLevel;
             
-            // Movimento lateral frenético
-            swayTime += 0.04; // MAIS rápido
-            sideSway = Math.sin(swayTime * 1.2) * 0.2 * chaosLevel + 
-                      Math.sin(swayTime * 0.5) * 0.1 * chaosLevel;
+            swayTime += 0.12;
+            sideSway = Math.sin(swayTime * 3.2) * 0.4 * chaosLevel + 
+                      Math.sin(swayTime * 1.8) * 0.2 * chaosLevel;
             
-            // Posição final COM TODOS OS EFEITOS INTENSIFICADOS
             horseModel.position.y = bounce + randomOffsetY + microVibration;
             horseModel.position.x = randomOffsetX + sideSway;
             horseModel.position.z = randomOffsetZ;
@@ -128,7 +118,7 @@ function init() {
 function startFlipAnimation() {
     flipSpeed = 0.07;
     flipDirection = 1;
-    chaosLevel = 0.8; // AUMENTADO para efeitos mais intensos
+    chaosLevel = 1.2;
     flipAngle = 0;
 }
 
@@ -202,10 +192,8 @@ function createDiagonalHorse() {
     horseModel.scale.set(scale, scale, scale);
     horseModel.position.set(0, 0, 0);
     
-    // Apenas Y e Z
     horseModel.rotation.y = -Math.PI / 4;
     horseModel.rotation.z = Math.PI / 24;
-    // NÃO setar rotation.x
     
     startFlipAnimation();
 }
@@ -303,49 +291,50 @@ function updateSpeedLines() {
 }
 
 function updateRandomness() {
-    // Aleatoriedade MUITO aumentada
-    randomOffsetX = (Math.random() - 0.5) * 0.3 * chaosLevel; // DOBROU
-    randomOffsetY = (Math.random() - 0.5) * 0.2 * chaosLevel; // DOBROU
-    randomOffsetZ = (Math.random() - 0.5) * 0.15 * chaosLevel; // QUASE DOBROU
+    randomOffsetX = (Math.random() - 0.5) * 0.5 * chaosLevel;
+    randomOffsetY = (Math.random() - 0.5) * 0.4 * chaosLevel;
+    randomOffsetZ = (Math.random() - 0.5) * 0.25 * chaosLevel;
     
-    targetJitter = (Math.random() - 0.5) * 0.8 * chaosLevel; // DOBROU
+    targetJitter = (Math.random() - 0.5) * 1.2 * chaosLevel;
     
-    tiltVariation = (Math.random() - 0.5) * 0.15 * chaosLevel; // TRIPLICOU
+    tiltVariation = (Math.random() - 0.5) * 0.3 * chaosLevel;
 }
 
 function applyControlledChaos(currentTime) {
     const time = currentTime * 0.001;
     
-    randomJitter += (targetJitter - randomJitter) * 0.1; // Mais rápido
+    randomJitter += (targetJitter - randomJitter) * 0.15;
     
-    // INCLINAÇÃO DO TRONCO MUITO INTENSIFICADA (eixo X - cima/baixo)
-    horseModel.rotation.x = Math.PI / 12 + // POSIÇÃO BASE
-                          Math.sin(time * 2.3) * 0.25 * chaosLevel + // AUMENTADO 2.5x
-                          Math.sin(time * 1.7) * 0.15 * chaosLevel + // AUMENTADO 3x
-                          Math.sin(time * 3.8) * 0.08 * chaosLevel + // NOVA frequência
-                          tiltVariation * 4; // QUADRUPLICADO
+    horseModel.rotation.x = Math.PI / 12 + 
+                          Math.sin(time * 15.3) * 0.8 * chaosLevel + 
+                          Math.sin(time * 8.7) * 0.5 * chaosLevel +
+                          Math.sin(time * 23.8) * 0.3 * chaosLevel +
+                          tiltVariation * 6;
     
-    // Rotação Z também com mais caos
-    horseModel.rotation.z += Math.sin(time * 1.5) * 0.03 * chaosLevel + // TRIPLICADO
-                           Math.sin(time * 2.1) * 0.02 * chaosLevel + // MAIS que DOBROU
-                           Math.sin(time * 4.3) * 0.01 * chaosLevel + // NOVA frequência
-                           randomJitter * 0.5; // AUMENTADO
+    horseModel.rotation.z += Math.sin(time * 12.5) * 0.1 * chaosLevel +
+                           Math.sin(time * 17.1) * 0.08 * chaosLevel +
+                           Math.sin(time * 29.3) * 0.05 * chaosLevel +
+                           randomJitter * 0.8;
     
-    // Pequeno ajuste em Y para mais loucura
-    horseModel.rotation.y += Math.sin(time * 0.9) * 0.01 * chaosLevel; // DOBROU
+    horseModel.rotation.y += Math.sin(time * 6.9) * 0.03 * chaosLevel;
     
-    // Inclinação da cabeça INTENSIFICADA
-    const headTilt = Math.sin(time * 3.2) * 0.08 * chaosLevel + // DOBROU
-                    Math.sin(time * 5.1) * 0.04 * chaosLevel; // NOVA frequência
+    const headTilt = Math.sin(time * 18.2) * 0.2 * chaosLevel +
+                    Math.sin(time * 25.1) * 0.12 * chaosLevel;
     horseModel.rotation.x += headTilt;
-    horseModel.rotation.z += headTilt * 0.7;
+    horseModel.rotation.z += headTilt * 0.9;
     
-    // Vibração EXTRA no modelo inteiro
-    const bodyVibration = Math.sin(time * 12.5) * 0.04 * chaosLevel +
-                         Math.sin(time * 7.8) * 0.02 * chaosLevel;
+    const bodyVibration = Math.sin(time * 32.5) * 0.15 * chaosLevel +
+                         Math.sin(time * 27.8) * 0.1 * chaosLevel +
+                         Math.sin(time * 45.2) * 0.06 * chaosLevel;
     horseModel.rotation.x += bodyVibration;
-    horseModel.rotation.y += bodyVibration * 0.3;
-    horseModel.rotation.z += bodyVibration * 0.4;
+    horseModel.rotation.y += bodyVibration * 0.5;
+    horseModel.rotation.z += bodyVibration * 0.6;
+    
+    const wildMovement = Math.sin(time * 52.7) * 0.08 * chaosLevel +
+                        Math.sin(time * 38.4) * 0.05 * chaosLevel;
+    horseModel.rotation.x += wildMovement * 0.7;
+    horseModel.rotation.z += wildMovement * 1.2;
+    horseModel.rotation.y += wildMovement * 0.4;
 }
 
 function initCopyButton() {
@@ -360,10 +349,10 @@ function initCopyButton() {
             copyBtn.textContent = 'COPIED!';
             copyBtn.classList.add('copied');
             
-            chaosLevel = 1.5; // MAIS caos ao copiar
+            chaosLevel = 2.0;
             setTimeout(() => {
-                chaosLevel = 1.1; // Mantém mais alto
-            }, 800); // Tempo maior
+                chaosLevel = 1.5;
+            }, 800);
             
             setTimeout(() => {
                 copyBtn.textContent = 'COPY';
