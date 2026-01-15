@@ -6,7 +6,7 @@ let flipAngle = 0;
 
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1178f9);
+    scene.background = new THREE.Color(0x0e56be);
     
     createSpeedLines();
 
@@ -321,3 +321,4 @@ if (document.readyState === 'loading') {
 } else {
     initCopyButton();
 }
+
