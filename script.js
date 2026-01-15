@@ -90,7 +90,7 @@ function init() {
             applyControlledChaos(currentTime);
             
             const bounce = Math.sin(flipAngle * 2) * 0.1;
-            const microVibration = Math.sin(currentTime * 0.015) * 0.02 * chaosLevel;
+            const microVibration = Math.sin(currentTime * 0.015) * 0.06 * chaosLevel;
             
             swayTime += 0.02;
             sideSway = Math.sin(swayTime * 0.7) * 0.08 * chaosLevel;
@@ -304,9 +304,9 @@ function applyControlledChaos(currentTime) {
     
     randomJitter += (targetJitter - randomJitter) * 0.05;
     
-    horseModel.rotation.x += Math.sin(time * 2.3) * 0.02 * chaosLevel + 
-                            Math.sin(time * 1.7) * 0.01 * chaosLevel +
-                            tiltVariation;
+    horseModel.rotation.x += Math.sin(time * 2.3) * 0.10 * chaosLevel + 
+                            Math.sin(time * 1.7) * 0.05 * chaosLevel +
+                            tiltVariation * 2;
     
     horseModel.rotation.z += Math.sin(time * 1.5) * 0.01 * chaosLevel + 
                             Math.sin(time * 2.1) * 0.008 * chaosLevel +
@@ -314,7 +314,7 @@ function applyControlledChaos(currentTime) {
     
     horseModel.rotation.y += Math.sin(time * 0.9) * 0.005 * chaosLevel;
     
-    const headTilt = Math.sin(time * 3.2) * 0.015 * chaosLevel;
+    const headTilt = Math.sin(time * 3.2) * 0.04 * chaosLevel;
     horseModel.rotation.x += headTilt;
     horseModel.rotation.z += headTilt * 0.5;
 }
@@ -366,3 +366,4 @@ if (document.readyState === 'loading') {
 }
 
 init();
+
