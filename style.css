@@ -182,6 +182,66 @@ body::before {
     100% { transform: scale(1) rotate(360deg); }
 }
 
+/* Adicionar ao CSS existente, após o keyframes warp */
+
+#container canvas {
+    filter: contrast(1.1) saturate(1.2);
+}
+
+/* Adicionar um overlay sutil para profundidade */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.4) 70%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    z-index: 0;
+    pointer-events: none;
+}
+
+.top-text {
+    /* Ajustar sombra para mais destaque */
+    text-shadow: 
+        0 0 15px #ff00ff,
+        0 0 25px #ff00ff,
+        0 0 35px #ff00ff,
+        0 0 45px #00ffff,
+        0 0 75px #00ffff,
+        0 0 85px #00ffff;
+    animation: textGlitch 2s infinite alternate;
+}
+
+@keyframes textGlitch {
+    0% { 
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    25% { 
+        transform: translateX(-3px) scale(1.02);
+        opacity: 0.9;
+    }
+    50% { 
+        transform: translateX(3px) scale(0.98);
+        opacity: 1;
+    }
+    75% { 
+        transform: translateX(-2px) scale(1.01);
+        opacity: 0.95;
+    }
+    100% { 
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+
 /* Mobile optimization */
 @media (max-width: 768px) {
     .top-text {
@@ -228,3 +288,4 @@ body::before {
         padding: 8px 16px;
     }
 }
+
