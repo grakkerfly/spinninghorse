@@ -1,6 +1,6 @@
 let scene, camera, renderer, horseModel;
 let flipSpeed = 0.12; // Mais rápido para flip contínuo
-let flipDirection = -1; // 1 para direita, -1 para esquerda
+let flipDirection = 1; // 1 para direita, -1 para esquerda
 let chaosLevel = 0.7; // Aumentei o caos
 let flipAngle = 0;
 
@@ -81,39 +81,31 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (horseModel) {
-        // FLIP CONTÍNUO PARA DIREITA (HORÁRIO)
-        // Aumentamos a velocidade para um flip mais visível
-        flipAngle += flipSpeed;
+        // FLIP CONTÍNUO HORÁRIO (para DIREITA)
+        // Diminuir velocidade para flip mais lento e visível
+        flipAngle -= flipSpeed; // SINAL NEGATIVO para girar HORÁRIO
         
-        // IMPORTANTE: Removemos qualquer reset do ângulo para evitar o "travamento"
-        // Deixe o ângulo continuar crescendo indefinidamente
-        // if (flipAngle > Math.PI * 2) flipAngle -= Math.PI * 2; // REMOVA ESTA LINHA
-        
-        // Para giro HORÁRIO fluido de 360°, usamos o flipAngle diretamente
-        // Giro em torno do eixo Z para flip lateral (horário quando positivo)
-        horseModel.rotation.z = Math.PI / 24 + flipAngle * 1.2; // Multiplicador maior para giro mais visível
+        // Para giro HORÁRIO fluido de 360°, usamos flipAngle diretamente
+        // Giro em torno do eixo Z para flip lateral
+        // Quanto MAIOR o número, MAIS RÁPIDO o giro
+        horseModel.rotation.z = Math.PI / 24 + flipAngle * 0.8; // 0.8 é velocidade do giro
         
         // Mantemos a rotação diagonal base
         horseModel.rotation.y = -Math.PI / 4;
         
         // Ajustamos a inclinação X para um flip mais natural
-        horseModel.rotation.x = Math.PI / 12 + Math.sin(flipAngle) * 0.3;
+        horseModel.rotation.x = Math.PI / 12;
         
         // Efeito caótico reduzido para não interferir no giro fluido
         if (chaosLevel > 0) {
             const time = Date.now() * 0.001;
             horseModel.rotation.x += Math.sin(time * 2.3) * 0.02 * chaosLevel;
-            horseModel.rotation.y += Math.cos(time * 1.7) * 0.01 * chaosLevel;
-            horseModel.rotation.z += Math.sin(time * 3.1) * 0.01 * chaosLevel;
+            horseModel.rotation.z += Math.sin(time * 1.5) * 0.01 * chaosLevel;
         }
         
         // Movimento de "pulo" durante o flip
         const bounce = Math.sin(flipAngle * 2) * 0.1;
         horseModel.position.y = bounce;
-        
-        // Leve oscilação lateral
-        const sway = Math.sin(flipAngle * 0.5) * 0.05;
-        horseModel.position.x = sway;
     }
 
     // Atualizar efeitos de velocidade
@@ -122,6 +114,8 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+
+    
     animate();
 
     window.addEventListener('resize', () => {
@@ -132,15 +126,14 @@ function animate() {
 }
 
 function startFlipAnimation() {
-    // Configurar flip rápido, contínuo e HORÁRIO
-    flipSpeed = 0.08; // Aumentei a velocidade para giro mais fluido
+    // Configurar flip LENTO, contínuo e HORÁRIO
+    flipSpeed = 0.05; // Diminuí para 0.05 (era 0.08) - Quanto MENOR, MAIS LENTO
     flipDirection = 1; // HORÁRIO (para direita)
-    chaosLevel = 0.3; // Reduzi o caos para não interferir no giro fluido
+    chaosLevel = 0.2; // Caos mínimo para não atrapalhar o giro
     flipAngle = 0;
     
     console.log('Flip contínuo HORÁRIO iniciado!');
 }
-
 
 function createDiagonalHorse() {
     const group = new THREE.Group();
@@ -388,4 +381,5 @@ if (document.readyState === 'loading') {
     initCopyButton();
 
 }
+
 
