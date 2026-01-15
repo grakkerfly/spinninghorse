@@ -76,47 +76,51 @@ function init() {
         createDiagonalHorse();
     });
 
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
 
-        if (horseModel) {
-            // FLIP CONTÍNUO PARA DIREITA
-            // Rotação principal em torno do eixo Z (para flip lateral)
-            flipAngle += flipSpeed * flipDirection;
-            
-            // Reset do ângulo para evitar overflow
-            if (flipAngle > Math.PI * 2) flipAngle -= Math.PI * 2;
-            
-            // Aplicar rotação de flip (principalmente no eixo X e Z para efeito diagonal)
-            horseModel.rotation.x = Math.PI / 12 + Math.sin(flipAngle) * 0.5;
-            horseModel.rotation.z = Math.PI / 24 + flipAngle * 0.8;
-            
-            // Manter a rotação diagonal base
-            horseModel.rotation.y = -Math.PI / 4 + Math.sin(flipAngle * 0.3) * 0.2;
-            
-            // Efeito caótico: pequenas variações aleatórias
-            if (chaosLevel > 0) {
-                const time = Date.now() * 0.001;
-                horseModel.rotation.x += Math.sin(time * 2.3) * 0.05 * chaosLevel;
-                horseModel.rotation.y += Math.cos(time * 1.7) * 0.03 * chaosLevel;
-                horseModel.rotation.z += Math.sin(time * 3.1) * 0.04 * chaosLevel;
-            }
-            
-            // Movimento de "pulo" durante o flip
-            const bounce = Math.sin(flipAngle * 2) * 0.1;
-            horseModel.position.y = bounce;
-            
-            // Leve oscilação lateral
-            const sway = Math.sin(flipAngle * 0.5) * 0.05;
-            horseModel.position.x = sway;
+    if (horseModel) {
+        // FLIP CONTÍNUO PARA DIREITA (HORÁRIO)
+        // Aumentamos a velocidade para um flip mais visível
+        flipAngle += flipSpeed;
+        
+        // IMPORTANTE: Removemos qualquer reset do ângulo para evitar o "travamento"
+        // Deixe o ângulo continuar crescendo indefinidamente
+        // if (flipAngle > Math.PI * 2) flipAngle -= Math.PI * 2; // REMOVA ESTA LINHA
+        
+        // Para giro HORÁRIO fluido de 360°, usamos o flipAngle diretamente
+        // Giro em torno do eixo Z para flip lateral (horário quando positivo)
+        horseModel.rotation.z = Math.PI / 24 + flipAngle * 1.2; // Multiplicador maior para giro mais visível
+        
+        // Mantemos a rotação diagonal base
+        horseModel.rotation.y = -Math.PI / 4;
+        
+        // Ajustamos a inclinação X para um flip mais natural
+        horseModel.rotation.x = Math.PI / 12 + Math.sin(flipAngle) * 0.3;
+        
+        // Efeito caótico reduzido para não interferir no giro fluido
+        if (chaosLevel > 0) {
+            const time = Date.now() * 0.001;
+            horseModel.rotation.x += Math.sin(time * 2.3) * 0.02 * chaosLevel;
+            horseModel.rotation.y += Math.cos(time * 1.7) * 0.01 * chaosLevel;
+            horseModel.rotation.z += Math.sin(time * 3.1) * 0.01 * chaosLevel;
         }
-
-        // Atualizar efeitos de velocidade
-        updateSpeedLines();
-
-        renderer.render(scene, camera);
+        
+        // Movimento de "pulo" durante o flip
+        const bounce = Math.sin(flipAngle * 2) * 0.1;
+        horseModel.position.y = bounce;
+        
+        // Leve oscilação lateral
+        const sway = Math.sin(flipAngle * 0.5) * 0.05;
+        horseModel.position.x = sway;
     }
+
+    // Atualizar efeitos de velocidade
+    updateSpeedLines();
+
+    renderer.render(scene, camera);
+}
 
     animate();
 
@@ -128,14 +132,15 @@ function init() {
 }
 
 function startFlipAnimation() {
-    // Configurar flip rápido e contínuo
-    flipSpeed = 0.05; // Mais rápido
-    flipDirection = 1; // Para direita
-    chaosLevel = 0.6; // Máximo caos
+    // Configurar flip rápido, contínuo e HORÁRIO
+    flipSpeed = 0.08; // Aumentei a velocidade para giro mais fluido
+    flipDirection = 1; // HORÁRIO (para direita)
+    chaosLevel = 0.3; // Reduzi o caos para não interferir no giro fluido
     flipAngle = 0;
     
-    console.log('Flip contínuo iniciado!');
+    console.log('Flip contínuo HORÁRIO iniciado!');
 }
+
 
 function createDiagonalHorse() {
     const group = new THREE.Group();
@@ -327,8 +332,8 @@ function updateSpeedLines() {
         
         lines.geometry.attributes.position.needsUpdate = true;
         
-        // Rotação das linhas com o flip
-        lines.mesh.rotation.y += lines.speed * flipDirection;
+        // Rotação das linhas com o flip (HORÁRIO)
+        lines.mesh.rotation.z -= lines.speed * 0.5; // Linhas giram no sentido oposto para efeito visual
     }
 }
 
@@ -383,3 +388,4 @@ if (document.readyState === 'loading') {
     initCopyButton();
 
 }
+
