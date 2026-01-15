@@ -116,7 +116,7 @@ function init() {
 }
 
 function startFlipAnimation() {
-    flipSpeed = 0.07;
+    flipSpeed = 0.08;
     flipDirection = 1;
     chaosLevel = 1.2;
     flipAngle = 0;
@@ -306,10 +306,10 @@ function applyControlledChaos(currentTime) {
     randomJitter += (targetJitter - randomJitter) * 0.15;
     
     horseModel.rotation.x = Math.PI / 12 + 
-                          Math.sin(time * 15.3) * 0.8 * chaosLevel + 
-                          Math.sin(time * 8.7) * 0.5 * chaosLevel +
-                          Math.sin(time * 23.8) * 0.3 * chaosLevel +
-                          tiltVariation * 6;
+                          Math.sin(time * 15.3) * 0.6 * chaosLevel + 
+                          Math.sin(time * 8.7) * 0.4 * chaosLevel +
+                          Math.sin(time * 23.8) * 0.2 * chaosLevel +
+                          tiltVariation * 5;
     
     horseModel.rotation.z += Math.sin(time * 12.5) * 0.1 * chaosLevel +
                            Math.sin(time * 17.1) * 0.08 * chaosLevel +
@@ -384,3 +384,4 @@ if (document.readyState === 'loading') {
 }
 
 init();
+
