@@ -12,7 +12,7 @@ body {
     position: relative;
 }
 
-/* Efeito de gradiente sutil sobre o azul */
+/* gradient */
 body::before {
     content: '';
     position: fixed;
@@ -47,7 +47,7 @@ body::before {
     align-items: center;
 }
 
-/* Efeito de partículas para o fundo */
+/* particles */
 #container::before {
     content: '';
     position: absolute;
@@ -218,7 +218,7 @@ body::before {
     left: 100%;
 }
 
-/* Efeito de brilho para o conteúdo 3D */
+/* 3d glow */
 #container canvas {
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
     animation: canvasGlow 4s ease-in-out infinite alternate;
@@ -229,7 +229,7 @@ body::before {
     100% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.3)); }
 }
 
-/* Overlay sutil para profundidade */
+/* Overlay */
 body::after {
     content: '';
     position: fixed;
@@ -311,7 +311,7 @@ body::after {
     }
 }
 
-/* Efeito de scan lines sutil */
+/* scan lines */
 .scanlines {
     position: fixed;
     top: 0;
@@ -333,4 +333,5 @@ body::after {
 @keyframes scanlines {
     0% { background-position: 0 0; }
     100% { background-position: 0 100%; }
+
 }
