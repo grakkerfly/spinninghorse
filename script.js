@@ -1,7 +1,7 @@
 let scene, camera, renderer, horseModel;
-let flipSpeed = 0.10; // Mais rápido para flip contínuo
-let flipDirection = 1; // 1 para direita, -1 para esquerda
-let chaosLevel = 0.8; // Aumentei o caos
+let flipSpeed = 0.12; // Mais rápido para flip contínuo
+let flipDirection = -1; // 1 para direita, -1 para esquerda
+let chaosLevel = 0.7; // Aumentei o caos
 let flipAngle = 0;
 
 function init() {
@@ -381,4 +381,5 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCopyButton);
 } else {
     initCopyButton();
+
 }
