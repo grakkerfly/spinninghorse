@@ -12,7 +12,6 @@ body {
     position: relative;
 }
 
-
 body::before {
     content: '';
     position: fixed;
@@ -46,7 +45,6 @@ body::before {
     justify-content: center;
     align-items: center;
 }
-
 
 #container::before {
     content: '';
@@ -113,17 +111,31 @@ body::before {
     }
 }
 
-.bottom-section {
+.bottom-wrapper {
     position: absolute;
     bottom: 60px;
     left: 0;
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
     z-index: 2;
+    flex-wrap: wrap;
+}
+
+.bottom-group {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+}
+
+.label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-family: 'Courier New', monospace;
 }
 
 .contract-text {
@@ -156,7 +168,7 @@ body::before {
     transform: translateY(-2px);
 }
 
-.copy-btn {
+.action-btn {
     background: linear-gradient(135deg, #ffffff, #e6e6e6);
     color: #1178f9;
     border: none;
@@ -174,9 +186,13 @@ body::before {
     overflow: hidden;
     z-index: 3;
     font-family: 'Arial', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
 }
 
-.copy-btn:hover {
+.action-btn:hover {
     transform: scale(1.1) translateY(-2px);
     background: linear-gradient(135deg, #ffffff, #ffffff);
     box-shadow: 
@@ -186,14 +202,14 @@ body::before {
     color: #0a5dc2;
 }
 
-.copy-btn:active {
+.action-btn:active {
     transform: scale(1.05) translateY(0);
     box-shadow: 
         0 2px 10px rgba(0, 0, 0, 0.2),
         0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
-.copy-btn.copied {
+.action-btn.copied {
     background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white;
     box-shadow: 
@@ -201,7 +217,7 @@ body::before {
         0 0 0 2px rgba(76, 175, 80, 0.5);
 }
 
-.copy-btn::before {
+.action-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -212,10 +228,9 @@ body::before {
     transition: left 0.7s;
 }
 
-.copy-btn:hover::before {
+.action-btn:hover::before {
     left: 100%;
 }
-
 
 #container canvas {
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
@@ -226,7 +241,6 @@ body::before {
     0% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
     100% { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.3)); }
 }
-
 
 body::after {
     content: '';
@@ -252,64 +266,6 @@ body::after {
     100% { opacity: 0.5; }
 }
 
-/* Mobile optimization */
-@media (max-width: 768px) {
-    .top-text {
-        top: 30px;
-        font-size: 2rem;
-        padding: 0 15px;
-        letter-spacing: 3px;
-        text-shadow: 
-            0 0 8px rgba(255, 255, 255, 0.8),
-            0 0 15px rgba(255, 255, 255, 0.6),
-            0 0 22px rgba(255, 215, 0, 0.5);
-    }
-    
-    .bottom-section {
-        bottom: 40px;
-    }
-    
-    .contract-text {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-        max-width: 90%;
-        backdrop-filter: blur(5px);
-    }
-    
-    .copy-btn {
-        font-size: 0.9rem;
-        padding: 10px 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .top-text {
-        top: 20px;
-        font-size: 1.5rem;
-        letter-spacing: 2px;
-        text-shadow: 
-            0 0 6px rgba(255, 255, 255, 0.8),
-            0 0 12px rgba(255, 255, 255, 0.6),
-            0 0 18px rgba(255, 215, 0, 0.4);
-    }
-    
-    .bottom-section {
-        bottom: 30px;
-        gap: 10px;
-    }
-    
-    .contract-text {
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
-    
-    .copy-btn {
-        font-size: 0.8rem;
-        padding: 8px 16px;
-    }
-}
-
-
 .scanlines {
     position: fixed;
     top: 0;
@@ -333,4 +289,87 @@ body::after {
     100% { background-position: 0 100%; }
 }
 
+/* Mobile optimization */
+@media (max-width: 768px) {
+    .top-text {
+        top: 30px;
+        font-size: 2rem;
+        padding: 0 15px;
+        letter-spacing: 3px;
+        text-shadow: 
+            0 0 8px rgba(255, 255, 255, 0.8),
+            0 0 15px rgba(255, 255, 255, 0.6),
+            0 0 22px rgba(255, 215, 0, 0.5);
+    }
+    
+    .bottom-wrapper {
+        bottom: 40px;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+    
+    .contract-text {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        backdrop-filter: blur(5px);
+    }
+    
+    .action-btn {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        width: 100px;
+    }
+}
 
+.sticker-label {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    padding: 12px 24px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+    font-family: 'Courier New', monospace;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    min-width: 280px;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .top-text {
+        top: 20px;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        text-shadow: 
+            0 0 6px rgba(255, 255, 255, 0.8),
+            0 0 12px rgba(255, 255, 255, 0.6),
+            0 0 18px rgba(255, 215, 0, 0.4);
+    }
+    
+    .bottom-wrapper {
+        gap: 20px;
+        bottom: 30px;
+    }
+    
+    .contract-text {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    
+    .label {
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        width: 90px;
+    }
+}
