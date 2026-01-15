@@ -4,6 +4,17 @@ let flipDirection = 1;
 let chaosLevel = 0.7;
 let flipAngle = 0;
 
+let randomOffsetX = 0;
+let randomOffsetY = 0;
+let randomOffsetZ = 0;
+let randomJitter = 0;
+let targetJitter = 0;
+let sideSway = 0;
+let swayTime = 0;
+let tiltVariation = 0;
+let lastRandomUpdate = 0;
+const RANDOM_UPDATE_INTERVAL = 800;
+
 function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0e56be);
@@ -52,8 +63,6 @@ function init() {
         horseModel.rotation.x = Math.PI / 12;
         horseModel.rotation.z = Math.PI / 24;
         
-        console.log('Horse loaded!');
-        
         startFlipAnimation();
         
     }, undefined, function(error) {
@@ -65,20 +74,30 @@ function init() {
         requestAnimationFrame(animate);
 
         if (horseModel) {
-            flipAngle -= flipSpeed;
+            const currentTime = Date.now();
+            
+            if (currentTime - lastRandomUpdate > RANDOM_UPDATE_INTERVAL) {
+                updateRandomness();
+                lastRandomUpdate = currentTime;
+            }
+            
+            flipAngle -= flipSpeed * (0.9 + Math.random() * 0.2);
             
             horseModel.rotation.z = Math.PI / 24 + flipAngle * 0.8;
             horseModel.rotation.y = -Math.PI / 4;
             horseModel.rotation.x = Math.PI / 12;
             
-            if (chaosLevel > 0) {
-                const time = Date.now() * 0.001;
-                horseModel.rotation.x += Math.sin(time * 2.3) * 0.02 * chaosLevel;
-                horseModel.rotation.z += Math.sin(time * 1.5) * 0.01 * chaosLevel;
-            }
+            applyControlledChaos(currentTime);
             
             const bounce = Math.sin(flipAngle * 2) * 0.1;
-            horseModel.position.y = bounce;
+            const microVibration = Math.sin(currentTime * 0.015) * 0.02 * chaosLevel;
+            
+            swayTime += 0.02;
+            sideSway = Math.sin(swayTime * 0.7) * 0.08 * chaosLevel;
+            
+            horseModel.position.y = bounce + randomOffsetY + microVibration;
+            horseModel.position.x = randomOffsetX + sideSway;
+            horseModel.position.z = randomOffsetZ;
         }
 
         updateSpeedLines();
@@ -99,8 +118,6 @@ function startFlipAnimation() {
     flipDirection = 1;
     chaosLevel = 0.2;
     flipAngle = 0;
-    
-    console.log('Flip animation started!');
 }
 
 function createDiagonalHorse() {
@@ -176,8 +193,6 @@ function createDiagonalHorse() {
     horseModel.rotation.y = -Math.PI / 4;
     horseModel.rotation.x = Math.PI / 12;
     horseModel.rotation.z = Math.PI / 24;
-    
-    console.log('Diagonal horse created!');
     
     startFlipAnimation();
 }
@@ -274,7 +289,35 @@ function updateSpeedLines() {
     }
 }
 
-init();
+function updateRandomness() {
+    randomOffsetX = (Math.random() - 0.5) * 0.15 * chaosLevel;
+    randomOffsetY = (Math.random() - 0.5) * 0.1 * chaosLevel;
+    randomOffsetZ = (Math.random() - 0.5) * 0.08 * chaosLevel;
+    
+    targetJitter = (Math.random() - 0.5) * 0.4 * chaosLevel;
+    
+    tiltVariation = (Math.random() - 0.5) * 0.05 * chaosLevel;
+}
+
+function applyControlledChaos(currentTime) {
+    const time = currentTime * 0.001;
+    
+    randomJitter += (targetJitter - randomJitter) * 0.05;
+    
+    horseModel.rotation.x += Math.sin(time * 2.3) * 0.02 * chaosLevel + 
+                            Math.sin(time * 1.7) * 0.01 * chaosLevel +
+                            tiltVariation;
+    
+    horseModel.rotation.z += Math.sin(time * 1.5) * 0.01 * chaosLevel + 
+                            Math.sin(time * 2.1) * 0.008 * chaosLevel +
+                            randomJitter * 0.3;
+    
+    horseModel.rotation.y += Math.sin(time * 0.9) * 0.005 * chaosLevel;
+    
+    const headTilt = Math.sin(time * 3.2) * 0.015 * chaosLevel;
+    horseModel.rotation.x += headTilt;
+    horseModel.rotation.z += headTilt * 0.5;
+}
 
 function initCopyButton() {
     const copyBtn = document.getElementById('copyBtn');
@@ -322,3 +365,4 @@ if (document.readyState === 'loading') {
     initCopyButton();
 }
 
+init();
