@@ -1,5 +1,5 @@
 let scene, camera, renderer, horseModel;
-let flipSpeed = 0.15; // Mais rápido para flip contínuo
+let flipSpeed = 0.10; // Mais rápido para flip contínuo
 let flipDirection = 1; // 1 para direita, -1 para esquerda
 let chaosLevel = 0.8; // Aumentei o caos
 let flipAngle = 0;
@@ -129,7 +129,7 @@ function init() {
 
 function startFlipAnimation() {
     // Configurar flip rápido e contínuo
-    flipSpeed = 0.18; // Mais rápido
+    flipSpeed = 0.08; // Mais rápido
     flipDirection = 1; // Para direita
     chaosLevel = 0.9; // Máximo caos
     flipAngle = 0;
@@ -382,3 +382,4 @@ if (document.readyState === 'loading') {
 } else {
     initCopyButton();
 }
+
